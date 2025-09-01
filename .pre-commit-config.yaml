@@ -1,0 +1,18 @@
+repos:
+  - repo: local
+    hooks:
+      - id: cargo-test-main
+        name: cargo test (rapid_record)
+        entry: bash -c 'cargo test'
+        language: system
+        pass_filenames: false
+      - id: cargo-clippy-main
+        name: cargo clippy (rapid_record)
+        entry: bash -c 'cargo clippy -- -D warnings'
+        language: system
+        pass_filenames: false
+      - id: cargo-fmt-main
+        name: cargo fmt (rapid_record)
+        entry: bash -c 'cargo fmt -- --check'
+        language: system
+        pass_filenames: false

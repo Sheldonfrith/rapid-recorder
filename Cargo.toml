@@ -2,6 +2,14 @@
 name = "rapid_recorder"
 version = "0.1.0"
 edition = "2024"
+description = "High-performance library for tracking internal variables in concurrent Rust applications"
+authors = ["Sheldon Frith"]
+license = "MIT"
+repository = "https://github.com/sheldonfrith/rapid-recorder"
+readme = "README.md"
+keywords = ["profiling", "instrumentation", "performance", "concurrent", "debugging"]
+categories = ["development-tools::profiling", "concurrency", "monitoring"]
+
 
 [dependencies]
 atomic_float = "1.1.0"
@@ -12,3 +20,10 @@ flurry = "0.5.2"
 log = "0.4.27"
 parking_lot = "0.12.4"
 rayon = "1.11.0"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "recorder_benchmarks"
+harness = false

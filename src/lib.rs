@@ -21,6 +21,16 @@ pub mod prelude {
     pub use crate::impl_rapid_recorder_named_usize;
     pub use crate::named_usize::ValidRapidRecorderNamedUsize;
 }
+
+/// The main recorder for storing events and managing recording groups.
+///
+/// RapidRecorder is responsible for tracking internal variables efficiently in
+/// concurrent code, with minimal performance impact.
+///
+/// # Type Parameters
+///
+/// * `IndexDimmension` - The type used for indexing records, should be an enum that maps to usize
+/// * `ReadingName` - The type used for naming readings, should be an enum that maps to usize
 pub struct RapidRecorder<
     IndexDimmension: ValidRapidRecorderNamedUsize,
     ReadingName: ValidRapidRecorderNamedUsize,
