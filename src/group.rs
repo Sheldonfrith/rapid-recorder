@@ -29,7 +29,7 @@ impl<SamplingFrequency: ValidRapidRecorderNamedUsize, IndexDimmension: ValidRapi
         rate: SamplingFrequency,
     ) -> RapidRecorderGroup<SamplingFrequency, IndexDimmension> {
         RapidRecorderGroup {
-            sample_rate: Some(rate.clone()),
+            sample_rate: Some(rate),
             sample_rate_value: Some(rate.into()),
             index_type: self.index_type,
             index_type_value: self.index_type_value,
@@ -46,5 +46,13 @@ impl<SamplingFrequency: ValidRapidRecorderNamedUsize, IndexDimmension: ValidRapi
             index_type: Some(index_type),
             index_type_value: Some(index_type.into()),
         }
+    }
+}
+
+impl Default for RapidRecorderGroup {
+    fn default() -> Self {
+        Self::new()
+            .index_type(DefaultIndexDimmension::Step)
+            .sample_rate(DefaultSamplingFrequency::EveryOne)
     }
 }

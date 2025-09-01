@@ -1,6 +1,8 @@
-use rapid_recorder::prelude::*;
+use rapid_recorder::{RRDuplicateEventIdHandling, prelude::*};
+use strum_macros::EnumIter;
 
 #[repr(u32)] // must have this above any enum you pass to impl_rapid_recorder_named_usize!
+#[derive(EnumIter)]
 pub enum ExampleReadingName {
     InternalVariable0,
     InternalVariable1,
@@ -10,6 +12,7 @@ pub enum ExampleReadingName {
 impl_rapid_recorder_named_usize!(ExampleReadingName);
 
 #[repr(u32)]
+#[derive(EnumIter)]
 pub enum DifferentReadingName {
     InternalVariable3,
     InternalVariable4,
@@ -63,5 +66,6 @@ pub fn main() {
     // process the results
     let raw_history = rapid_recorder.raw_history(); // retrieves all saved observations, Will have to sort through them, as there is no guarantee of order and no filtering by group or type, since the point is to make runtime observation as cheap as possible
     let oldest_event = rapid_recorder.convenient_pop(); // a bit more expensive than just getting the raw history and popping yourself, but the event returned by this has usizes converted back to the enum types for easier reading and matching
-    let mut sorted_history = rapid_recorder.sorted_history(); // retrieves all saved observations, sorted by group and type, and in order
+    let mut sorted_history = rapid_recorder
+        .sorted_history_with_duplicate_handling(RRDuplicateEventIdHandling::KeepOnlyFirst); // retrieves all saved observations, sorted by group and type, and in order
 }

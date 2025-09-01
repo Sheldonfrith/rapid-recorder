@@ -1,8 +1,11 @@
-use rapid_recorder::prelude::*;
+use rapid_recorder::{RRDuplicateEventIdHandling, prelude::*};
 use std::thread;
 use std::time::Duration;
+use strum_macros::EnumIter;
 
 #[repr(u32)]
+#[derive(EnumIter)]
+
 enum TestReadings {
     Reading0,
     Reading1,
@@ -13,7 +16,7 @@ impl_rapid_recorder_named_usize!(TestReadings);
 #[test]
 fn test_basic_recording() {
     // Initialize recorder
-    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 5);
+    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 3);
     let mut group = recorder.add_group(
         RapidRecorderGroup::new()
             .sample_rate(DefaultSamplingFrequency::EveryOne)
@@ -37,7 +40,7 @@ fn test_basic_recording() {
 
 #[test]
 fn test_sampling_frequency() {
-    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 5);
+    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 3);
 
     // Test EveryOne sampling rate
     let mut every_one = recorder.add_group(
@@ -61,13 +64,11 @@ fn test_sampling_frequency() {
         every_ten.start_record(i);
         every_ten.add(TestReadings::Reading0, i as f64);
     }
-
-    // Force final save
-    every_one.start_record(20);
-    every_ten.start_record(20);
-
+    every_one._save_record();
+    every_ten._save_record();
     // Get history and sort it
-    let sorted = recorder.sorted_history();
+    let sorted =
+        recorder.sorted_history_with_duplicate_handling(RRDuplicateEventIdHandling::KeepOnlyFirst);
 
     // Count records for each index type
     let mut one_count = 0;

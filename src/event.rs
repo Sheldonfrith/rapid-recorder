@@ -2,12 +2,13 @@ use std::collections::HashMap;
 
 use crate::named_usize::ValidRapidRecorderNamedUsize;
 
-pub struct LightweightRREvent {
+pub struct RawRREvent {
     pub readings: Vec<f64>,
+    pub changed: Vec<bool>,
     pub record_id: usize,
     pub id_type: usize,
 }
-impl LightweightRREvent {
+impl RawRREvent {
     pub fn to_rr_event<
         ReadingName: ValidRapidRecorderNamedUsize,
         IndexDimmension: ValidRapidRecorderNamedUsize,
@@ -16,6 +17,9 @@ impl LightweightRREvent {
     ) -> RREvent<ReadingName, IndexDimmension> {
         let mut values_map = HashMap::new();
         for (i, value) in self.readings.iter().enumerate() {
+            if !self.changed[i] {
+                continue;
+            }
             values_map.insert(ReadingName::from(i), *value);
         }
         RREvent {

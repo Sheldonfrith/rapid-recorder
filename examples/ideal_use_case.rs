@@ -1,10 +1,12 @@
 use log::info;
-use rapid_recorder::prelude::*;
+use rapid_recorder::{RRDuplicateEventIdHandling, prelude::*};
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use std::thread;
 use std::time::Duration;
+use strum_macros::EnumIter;
 
 #[repr(u32)]
+#[derive(EnumIter)]
 pub enum ExampleReadingNames {
     InternalVariable0,
     InternalVariable1,
@@ -150,8 +152,14 @@ pub fn main() {
     }
 
     // Get sorted history - more structured but slower
-    let sorted_history = rapid_recorder.sorted_history();
-    info!("Total recorded steps: {}", sorted_history.len());
+    let sorted_history = rapid_recorder
+        .sorted_history_with_duplicate_handling(RRDuplicateEventIdHandling::KeepOnlyFirst);
+    info!(
+        "Total recorded steps: {}",
+        sorted_history
+            .get(&DefaultIndexDimmension::Step)
+            .map_or(0, |events| events.len())
+    );
 
     // Process the data (in a real app, you might generate graphs, calculate statistics, etc.)
     info!("Analysis complete");

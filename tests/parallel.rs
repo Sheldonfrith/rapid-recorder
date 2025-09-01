@@ -1,7 +1,10 @@
 use rapid_recorder::prelude::*;
 use rayon::prelude::*;
+use strum_macros::EnumIter;
 
 #[repr(u32)]
+#[derive(EnumIter)]
+
 enum TestReadings {
     Reading0,
     Reading1,
@@ -12,7 +15,7 @@ impl_rapid_recorder_named_usize!(TestReadings);
 #[test]
 fn test_parallel_add() {
     // Test that we can add readings from multiple threads
-    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 5);
+    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 3);
     let mut group = recorder.add_group(
         RapidRecorderGroup::new()
             .sample_rate(DefaultSamplingFrequency::EveryOne)
@@ -49,7 +52,7 @@ fn test_parallel_add() {
 #[test]
 fn test_parallel_multi_level() {
     // Test nested parallel code similar to example
-    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 5);
+    let recorder: RapidRecorder<_, TestReadings> = RapidRecorder::new(1000, 3);
     let mut group = recorder.add_group(
         RapidRecorderGroup::new()
             .sample_rate(DefaultSamplingFrequency::EveryOne)

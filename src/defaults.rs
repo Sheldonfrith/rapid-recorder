@@ -1,6 +1,9 @@
+use strum_macros::EnumIter;
+
 use crate::impl_rapid_recorder_named_usize;
 
 #[repr(u32)]
+#[derive(EnumIter)]
 pub enum DefaultIndexDimmension {
     Time,
     Step,
@@ -15,7 +18,7 @@ pub enum DefaultIndexDimmension {
 }
 impl_rapid_recorder_named_usize!(DefaultIndexDimmension);
 #[repr(u32)]
-
+#[derive(EnumIter)]
 pub enum DefaultSamplingFrequency {
     EveryOne = 1,
     EveryTen = 10,

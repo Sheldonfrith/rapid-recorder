@@ -1,8 +1,10 @@
 use log::info;
 use rapid_recorder::prelude::*;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use strum_macros::EnumIter;
 
 #[repr(u32)]
+#[derive(EnumIter)]
 pub enum ExampleReadingNames {
     InternalVariable0,
     InternalVariable1,

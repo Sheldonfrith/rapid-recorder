@@ -1,10 +1,12 @@
 use rapid_recorder::prelude::*;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
+use strum_macros::EnumIter;
 
 // Test enum with standard sequential variants
 #[repr(u32)]
-#[derive(Debug)]
+#[derive(EnumIter)]
+
 enum BasicEnum {
     Variant0,
     Variant1,
@@ -14,7 +16,7 @@ impl_rapid_recorder_named_usize!(BasicEnum);
 
 // Test enum with explicit discriminants
 #[repr(u32)]
-#[derive(Debug)]
+#[derive(EnumIter)]
 
 enum ExplicitEnum {
     VariantA = 5,
@@ -142,6 +144,13 @@ fn test_roundtrip_conversion() {
         let back_to_enum = ExplicitEnum::from(as_usize);
         assert_eq!(variant, back_to_enum);
     }
+}
+
+// test that passing the wrong count corresponding to the enum panics with "doesn't match the actual number of enum variants"
+#[test]
+#[should_panic(expected = "doesn't match the actual number of enum variants")]
+fn test_enum_variant_count_mismatch() {
+    let _recorder: RapidRecorder<DefaultIndexDimmension, BasicEnum> = RapidRecorder::new(100, 5);
 }
 
 // Test with an enum with missing repr(u32)

@@ -1,8 +1,10 @@
 use criterion::{Criterion, black_box, criterion_group, criterion_main};
 use rapid_recorder::latest_reading_holder::LatestReadingHolder;
 use rapid_recorder::prelude::*;
+use strum_macros::EnumIter;
 
 #[repr(u32)]
+#[derive(EnumIter)]
 enum BenchReadings {
     Reading0,
     Reading1,

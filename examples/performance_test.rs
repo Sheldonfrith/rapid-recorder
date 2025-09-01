@@ -3,8 +3,10 @@ use rapid_recorder::latest_reading_holder::LatestReadingHolder;
 use rapid_recorder::prelude::*;
 use std::hint::black_box;
 use std::time::{Duration, Instant};
+use strum_macros::EnumIter;
 
 #[repr(u32)]
+#[derive(EnumIter)]
 pub enum ExampleReadingNames {
     InternalVariable0,
     InternalVariable1,
