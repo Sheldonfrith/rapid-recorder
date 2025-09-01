@@ -8,7 +8,7 @@ license = "MIT"
 repository = "https://github.com/sheldonfrith/rapid-recorder"
 readme = "README.md"
 keywords = ["profiling", "instrumentation", "performance", "concurrent", "debugging"]
-categories = ["development-tools::profiling", "concurrency", "monitoring"]
+categories = ["development-tools::profiling", "concurrency"]
 
 
 [dependencies]
